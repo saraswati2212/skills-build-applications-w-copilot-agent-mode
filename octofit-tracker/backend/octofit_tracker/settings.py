@@ -78,6 +78,7 @@ DATABASES = {
         'CLIENT': {
             'host': 'mongodb://localhost:27017',
             'port': 27017,
+            # No authentication or password required
         },
     }
 }
@@ -111,10 +112,13 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # CORS settings
+from corsheaders.defaults import default_headers, default_methods
 CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
-CORS_ALLOW_HEADERS = list()
-CORS_ALLOW_METHODS = list()
-from corsheaders.defaults import default_headers, default_methods
 CORS_ALLOW_HEADERS = list(default_headers)
 CORS_ALLOW_METHODS = list(default_methods)
+import os
+CS_NAME = os.environ.get('CODESPACE_NAME')
+if CS_NAME:
+    ALLOWED_HOSTS.append(f'{CS_NAME}-8000.app.github.dev')
+ALLOWED_HOSTS.append('*')

@@ -18,7 +18,6 @@ from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from rest_framework.reverse import reverse
 from .views import TeamViewSet, ActivityViewSet, LeaderboardViewSet, WorkoutViewSet
 
 router = DefaultRouter()
@@ -27,10 +26,7 @@ router.register(r'activities', ActivityViewSet)
 router.register(r'leaderboard', LeaderboardViewSet)
 router.register(r'workouts', WorkoutViewSet)
 
-
-# API root returns full URLs for each component, using $CODESPACE_NAME if available
 import os
-
 @api_view(['GET'])
 def api_root(request, format=None):
     cs_name = os.environ.get('CODESPACE_NAME')
@@ -48,5 +44,6 @@ def api_root(request, format=None):
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),
+    path('', api_root, name='api-root'),
     path('', api_root, name='api-root'),
 ]
