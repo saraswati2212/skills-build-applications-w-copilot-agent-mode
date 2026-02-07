@@ -15,7 +15,14 @@ SECRET_KEY = 'replace-this-with-a-secure-key'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+import os
+
+# Allow localhost, 127.0.0.1, Codespaces public URL, and all hosts (for dev)
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+CS_NAME = os.environ.get('CODESPACE_NAME')
+if CS_NAME:
+    ALLOWED_HOSTS.append(f'{CS_NAME}-8000.app.github.dev')
+ALLOWED_HOSTS.append('*')
 
 # Application definition
 INSTALLED_APPS = [
@@ -71,10 +78,6 @@ DATABASES = {
         'CLIENT': {
             'host': 'mongodb://localhost:27017',
             'port': 27017,
-            'username': '',
-            'password': '',
-            'authSource': 'admin',
-            'authMechanism': 'SCRAM-SHA-1',
         },
     }
 }
