@@ -31,8 +31,10 @@ import os
 def api_root(request, format=None):
     cs_name = os.environ.get('CODESPACE_NAME')
     if cs_name:
-        base = f"http://{cs_name}-8000.app.github.dev/api/"
+        # Use HTTPS for Codespaces public URL to avoid certificate issues
+        base = f"https://{cs_name}-8000.app.github.dev/api/"
     else:
+        # Use HTTP for localhost
         base = request.build_absolute_uri('/api/')
     return Response({
         'teams': base + 'teams/',
